@@ -34,12 +34,21 @@ export default {
   },
   methods:{
     check:function(){
+      var that = this
       console.log(this.username)
       this.$http.post('/shirospring/loginWeb',{
         username:this.username,
         password:this.password
       }).then(function(res){
-        alert(JSON.stringify(res))
+        if (0 == res.data.code) {
+          localStorage.setItem('menus',JSON.stringify(res.data.data))
+          that.$router.push({
+            path:'/index'
+          })
+        }
+        else{
+          that.$alert(res.data.code + ":" +res.data.msg,'错误信息',{})
+        }
       })
     }
   }
