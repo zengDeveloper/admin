@@ -1,10 +1,13 @@
 <template>
-    
-    <v-menu></v-menu>
+	<div>
+	<v-header></v-header>
+    	<v-menu></v-menu>
+    </div>
 </template>
 <script>
-import menu from './common/menu'
+import vMenu from './common/menu'
+import vHeader from './common/header'
     export default{
-        components:{menu}
+        components:{vMenu, vHeader}
     }
 </script>
