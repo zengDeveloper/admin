@@ -2,20 +2,28 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import login from '@/components/login'
 import index from '@/pages/index'
+import role from '@/pages/resource/role'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
-      path: '/',
+      path: '/login',
       name: 'login',
       component: login
     },
     {
-      path: '/index',
+      path: '/',
       name: 'index',
-      component: index  
+      component: index,
+      children:[
+      {
+        path:'/resource/role',
+        name:'role',
+        component:role
+      }
+      ]
     }
     ]
 })
