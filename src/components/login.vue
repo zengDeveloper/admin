@@ -41,9 +41,11 @@ export default {
         password:this.password
       }).then(function(res){
         if (0 == res.data.code) {
+
           localStorage.setItem('menus',JSON.stringify(res.data.data))
+          console.log(JSON.stringify(localStorage.getItem('menus')))
           that.$router.push({
-            path:'/index'
+            path:'/'
           })
         }
         else{
@@ -60,8 +62,6 @@ export default {
   margin-left: 30%;
   margin-top: 20%;
 }
-.el-col{
-  margin-top: 10px;
-}
+
 
 </style>

@@ -14,11 +14,14 @@
                             <i class="el-icon-location"></i>
                             <span>{{menu.resourceName}}</span>
                         </template>
-                        <el-menu-item v-else :route="menu.resourcePath" :index=" i + '-' + j" >{{menu.resourceName}}</el-menu-item>
+                        <el-menu-item v-else @click="$router.push(menu.resourcePath)" :route="menu.resourcePath" :index=" i + '-' + j" >{{menu.resourcePath}}{{menu.resourceName}}</el-menu-item>
                     </template>
                 </el-submenu>
             </template>
         </el-menu>
+    </el-col>
+    <el-col :span="18">
+        <router-view></router-view>
     </el-col>
 </el-row>
 </template>
@@ -30,5 +33,6 @@ export default {
             menuss:JSON.parse(localStorage.getItem('menus'))
         }
     }
+    
 }
 </script>

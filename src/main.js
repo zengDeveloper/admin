@@ -8,9 +8,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import 'font-awesome/css/font-awesome.css'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
-
 Vue.config.productionTip = false
-
 Vue.use(Element)
 Vue.use(VueAxios, axios)
 
