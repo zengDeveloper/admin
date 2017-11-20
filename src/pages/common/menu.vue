@@ -14,7 +14,7 @@
                             <i class="el-icon-location"></i>
                             <span>{{menu.resourceName}}</span>
                         </template>
-                        <el-menu-item v-else @click="$router.push(menu.resourcePath)" :route="menu.resourcePath" :index=" i + '-' + j" >{{menu.resourcePath}}{{menu.resourceName}}</el-menu-item>
+                        <el-menu-item v-else @click="$router.push(menu.resourcePath)" :route="menu.resourcePath" :index=" i + '-' + j" >{{menu.resourceName}}</el-menu-item>
                     </template>
                 </el-submenu>
             </template>
