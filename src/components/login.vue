@@ -42,7 +42,6 @@ export default {
       }).then(function(res){
         if (0 == res.data.code) {
           localStorage.setItem('menus',JSON.stringify(res.data.data))
-          console.log(JSON.stringify(localStorage.getItem('menus')))
           that.$router.push({
             path:'/'
           })

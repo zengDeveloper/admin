@@ -36,7 +36,7 @@
 
 <script>
 
-	import {getRoleList,getRoleListByParent, saveRole} from '@/api/api'
+	import {getRoleList,getRoleListByParent, saveRole, deleteRole} from '@/api/api'
 	export default{
 		data(){
 			return {
@@ -54,6 +54,7 @@
 				 this.multipleSelection = val
 			},
 			loadChildren:function(node,resolve){
+                console.log(node)
 				 getRoleListByParent(node.data.id).then(res => {
 				 	if (res.data){
 					 	for (let i in res.data){
@@ -61,61 +62,73 @@
 					 	}
 					 	resolve(res.data)
 					 } else {
-					 	resolve(new Array)
+					 	resolve([])
 					 }
 				 })
+                 console.log(node)
 
 			},
 			openAddRoleWin(node,data){
-				let _this = this
-				_this.centerDialogVisible = true
-				_this.parentData = data
-				_this.currentNode = node
-				console.log(_this.currentNode)
+				this.centerDialogVisible = true
+				this.parentData = data
+				this.currentNode = node
 
 			},
 			addRole(){
 				this.addLoading = true
 				let _this = this
-				console.log(this.currentNode)
 				saveRole(JSON.stringify({
 					roleName:_this.addData.roleName,
 					resource:"1,2,3",
 					parentId:_this.parentData.id
 				})).then(res => {
-					 if (!_this.currentNode.childNodes) {
-          					this.$set(_this.currentNode, 'childNodes', []);
-        				}
-					const newChild = {data:_this.addData, label: _this.addData.roleName, children: [] }
-        			_this.currentNode.childNodes.push(newChild)
-					_this.addLoading = false
-					_this.centerDialogVisible = false
-					_this.clearAddForm()
+                    _this.addLoading = false
+                    _this.centerDialogVisible = false
+                    _this.clearAddForm()
+                    if (res.code == 0){
+                        debugger
+                        const newChild = {id:1000,label:_this.addData.roleName}
+                        if(!_this.parentData.children){
+                            _this.$set(_this.parentData, 'children', []);
+                        }
+                          _this.parentData.push(newChild);
+                        console.log(_this.currentNode)
+                        _this.$message({
+                            message:'操作成功',
+                            type:'success'
+                    })
+                    }
+                    else{
+
+                    }
+					
 				})
 			},
 			clearAddForm(){
 				this.addData ={}
 			},
+            refreshTree(){
+                getRoleList().then(res => {
+                this.roleList = res.data
+                for(var i in this.roleList){
+                    this.roleList[i].label = this.roleList[i].roleName
+                }
+            })
+            },
 			renderContent(h, { node, data, store }) {
         return (
-          <span style="flex: 1; display: flex; align-items: center; justify-content: space-between; font-size: 14px; padding-right: 8px;">
+          <span style="flex: 1; display: flex; align-items: center; justify-content: space-between; font-size: 18px; padding-right: 8px;">
             <span>
               <span>{node.label}</span>
             </span>
             <span>
-              <el-button style="font-size: 12px;" type="text" on-click={ () => this.openAddRoleWin(node, data) }>增加</el-button>
-              <el-button style="font-size: 12px;" type="text" on-click={ () => this.remove(node, data) }>删除</el-button>
+              <el-button style="font-size: 18px;" size="mini" type="text" on-click={ () => this.openAddRoleWin(node, data) }>增加</el-button>
+              <el-button style="font-size: 18px;" type="text" on-click={ () => this.remove(node, data) }>删除</el-button>
             </span>
           </span>);
       }},
 		mounted: function () {
-			var _this = this
-			getRoleList().then(res => {
-				_this.roleList = res.data
-				for(var i in _this.roleList){
-					_this.roleList[i].label = _this.roleList[i].roleName
-				}
-			})
+			this.refreshTree()
 	  }
 	}
 </script>
