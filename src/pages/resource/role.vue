@@ -86,12 +86,11 @@
                     _this.centerDialogVisible = false
                     _this.clearAddForm()
                     if (res.code == 0){
-                        debugger
                         const newChild = {id:1000,label:_this.addData.roleName}
                         if(!_this.parentData.children){
                             _this.$set(_this.parentData, 'children', []);
                         }
-                          _this.parentData.push(newChild);
+                          _this.parentData.children.push(newChild);
                         console.log(_this.currentNode)
                         _this.$message({
                             message:'操作成功',
@@ -104,9 +103,9 @@
 					
 				})
 			},
-			clearAddForm(){
-				this.addData ={}
-			},
+  			clearAddForm(){
+  				this.addData ={}
+			 },
             refreshTree(){
                 getRoleList().then(res => {
                 this.roleList = res.data
@@ -115,6 +114,19 @@
                 }
             })
             },
+      removeData(node,data){
+        console.log(node)
+        let params = [{id:data.id}]
+        deleteRole(params).then(res => {
+         if (res.code == 0 ){
+          this.$message({
+            message:'操作成功',
+            type:'success'
+          })
+         }
+        })
+
+      },
 			renderContent(h, { node, data, store }) {
         return (
           <span style="flex: 1; display: flex; align-items: center; justify-content: space-between; font-size: 18px; padding-right: 8px;">
@@ -122,8 +134,8 @@
               <span>{node.label}</span>
             </span>
             <span>
-              <el-button style="font-size: 18px;" size="mini" type="text" on-click={ () => this.openAddRoleWin(node, data) }>增加</el-button>
-              <el-button style="font-size: 18px;" type="text" on-click={ () => this.remove(node, data) }>删除</el-button>
+              <el-button style="font-size: 10px;" size="mini" type="text" on-click={ () => this.openAddRoleWin(node, data) }>增加</el-button>
+              <el-button style="font-size: 10px;" type="text" on-click={ () => this.removeData(node, data) }>删除</el-button>
             </span>
           </span>);
       }},
@@ -131,4 +143,11 @@
 			this.refreshTree()
 	  }
 	}
+
+
+
+
+
+
+
 </script>
