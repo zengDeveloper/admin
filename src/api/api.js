@@ -27,5 +27,8 @@ export const getRoleListByParent = (id) => {return axios.get(`${base}/resource/r
 export const saveRole = params => {return axios.post(`${base}/resource/role/save`,params).then(res => res.data) }
 export const deleteRole = params =>{return axios.post(`${base}/resource/role/delete`, params).then(res => res.data) }
 
-
-export const  getUserList = params => {return axios.post(`${base}/resource/user/getAllUser`,params).then(res => res.data)}
+//用户管理
+//查询所有用户
+export const getUserList = params => {return axios.post(`${base}/resource/user/getAllUser`,params).then(res => res.data)}
+//删除用户信息
+export const deleteUser = params => {return axios.post(`${base}/resource/user/deleteUserInfo`,params).then(res => res.data)}
