@@ -6,7 +6,6 @@ let base = '/shirospring'
 //let headers = [{Content-Type:'application/json'}]
 axios.interceptors.request.use( config => {
     config.headers['Content-Type'] = 'application/json'
-    console.log(config.headers)
     NProgress.start()
     return config;
   }, error=> {

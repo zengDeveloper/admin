@@ -1,5 +1,5 @@
 <template>
-        <el-row>
+        <el-row class="content">
           <el-col :span="6">
             <el-menu
             default-active="3"
@@ -14,13 +14,20 @@
                             <i class="el-icon-location"></i>
                             <span>{{menu.resourceName}}</span>
                         </template>
-                        <el-menu-item v-else @click="$router.push(menu.resourcePath)" :route="menu.resourcePath" :index=" i + '-' + j" >{{menu.resourceName}}</el-menu-item>
+                        <el-menu-item v-else @click="jump(menu.resourcePath,menus[0].resourceName, menu.resourceName)" :route="menu.resourcePath" :index=" i + '-' + j" >{{menu.resourceName}}</el-menu-item>
                     </template>
                 </el-submenu>
             </template>
         </el-menu>
     </el-col>
     <el-col :span="18">
+            <div style="margin:20px;">
+                <el-breadcrumb separator="/">
+                    <template v-for="breadcrumbd in breadcrumbdata">
+                        <el-breadcrumb-item>{{breadcrumbd}}</el-breadcrumb-item>
+                  </template>
+                </el-breadcrumb>
+            </div>
         <router-view></router-view>
     </el-col>
 </el-row>
@@ -30,9 +37,26 @@
 export default {
     data(){
         return {
-            menuss:JSON.parse(localStorage.getItem('menus'))
+            menuss:JSON.parse(localStorage.getItem('menus')),
+            breadcrumbdata:[]
+        }
+    },
+    methods:{
+        jump(path, parentSource, resourceName){
+            this.$router.push(path)
+            if( this.breadcrumbdata.length != 0){
+                this.breadcrumbdata.splice(0, breadcrumbdata.length, parentSource, resourceName)   
+                console.log(this.breadcrumbdata)
+            } else{
+                this.breadcrumbdata.push(parentSource)
+                this.breadcrumbdata.push(resourceName)
+            }
         }
     }
     
 }
 </script>
+
+<style>
+
+</style>
