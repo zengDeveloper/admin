@@ -1,5 +1,10 @@
 <template>
 	<div >
+    <el-row class="toolbar">
+      <el-col :span ="3">
+        <el-button size="mini" type="success" @click="openAddRoleWin"><i class="fa fa-plus"/>  增加</el-button>
+      </el-col>
+    </el-row>
 		<el-tree
 			:data="roleList"
  			lazy
@@ -54,7 +59,6 @@
 				 this.multipleSelection = val
 			},
 			loadChildren:function(node,resolve){
-                console.log(node)
 				 getRoleListByParent(node.data.id).then(res => {
 				 	if (res.data){
 					 	for (let i in res.data){
@@ -65,12 +69,17 @@
 					 	resolve([])
 					 }
 				 })
-                 console.log(node)
 
 			},
 			openAddRoleWin(node,data){
+        if(data){
+          this.parentData = data  
+        }
+        else{
+          this.parentData = {}
+        }
 				this.centerDialogVisible = true
-				this.parentData = data
+				
 				this.currentNode = node
 
 			},
@@ -91,7 +100,7 @@
                             _this.$set(_this.parentData, 'children', []);
                         }
                           _this.parentData.children.push(newChild);
-                        console.log(_this.currentNode)
+                        this.refreshTree()
                         _this.$message({
                             message:'操作成功',
                             type:'success'
@@ -115,7 +124,6 @@
             })
             },
       removeData(node,data){
-        console.log(node)
         let params = [{id:data.id}]
         deleteRole(params).then(res => {
          if (res.code == 0 ){
@@ -123,6 +131,7 @@
             message:'操作成功',
             type:'success'
           })
+          this.refreshTree()
          }
         })
 
@@ -134,8 +143,8 @@
               <span>{node.label}</span>
             </span>
             <span>
-              <el-button style="font-size: 10px;" size="mini" type="text" on-click={ () => this.openAddRoleWin(node, data) }>增加</el-button>
-              <el-button style="font-size: 10px;" type="text" on-click={ () => this.removeData(node, data) }>删除</el-button>
+              <el-button style="font-size: 16px;" size="mini" type="text" on-click={ () => this.openAddRoleWin(node, data) }>增加</el-button>
+              <el-button style="font-size: 16px;" type="text" on-click={ () => this.removeData(node, data) }>删除</el-button>
             </span>
           </span>);
       }},
@@ -144,10 +153,10 @@
 	  }
 	}
 
-
-
-
-
-
-
 </script>
+
+<style type="text/css">
+  .toolbar{
+    margin: 10px;
+  }
+</style>
