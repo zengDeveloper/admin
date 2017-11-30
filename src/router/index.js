@@ -4,6 +4,7 @@ import login from '@/components/login'
 import index from '@/pages/index'
 import role from '@/pages/resource/role'
 import user from '@/pages/resource/user'
+import resource from  '@/pages/resource/resource'
 
 Vue.use(Router)
 
@@ -28,6 +29,10 @@ export default new Router({
         path:'/resource/user',
         name:'user',
         component:user
+      },{
+        path:'/resource/resource',
+        name:'resource',
+        component:resource
       }
       ]
     }
