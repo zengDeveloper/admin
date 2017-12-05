@@ -31,3 +31,11 @@ export const deleteRole = params =>{return axios.post(`${base}/resource/role/del
 export const getUserList = params => {return axios.post(`${base}/resource/user/getAllUser`,params).then(res => res.data)}
 //删除用户信息
 export const deleteUser = params => {return axios.post(`${base}/resource/user/deleteUserInfo`,params).then(res => res.data)}
+
+
+//资源
+export const getResourceList = () => {return axios.get(`${base}/resource/resource/listTopResource`).then(res => res.data)}
+export const getResourceListByParent = (id) => {return axios.get(`${base}/resource/resource/listByParent/${id}`).then(res => res.data)}
+export const saveResource = params => {return axios.post(`${base}/resource/resource/save`,params).then(res => res.data) }
+export const deleteResource = params =>{return axios.post(`${base}/resource/resource/delete`, params).then(res => res.data) }
+
