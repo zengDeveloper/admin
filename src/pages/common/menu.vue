@@ -43,13 +43,13 @@ export default {
     },
     methods:{
         jump(path, parentSource, resourceName){
-            this.$router.push(path)
-            if( this.breadcrumbdata.length != 0){
-                this.breadcrumbdata.splice(0, breadcrumbdata.length, parentSource, resourceName)   
-                console.log(this.breadcrumbdata)
+            let _this = this
+            _this.$router.push(path)
+            if( _this.breadcrumbdata.length != 0){
+                _this.breadcrumbdata.splice(0, _this.breadcrumbdata.length, parentSource, resourceName)
             } else{
-                this.breadcrumbdata.push(parentSource)
-                this.breadcrumbdata.push(resourceName)
+                _this.breadcrumbdata.push(parentSource)
+                _this.breadcrumbdata.push(resourceName)
             }
         }
     }
