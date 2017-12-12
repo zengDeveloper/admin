@@ -1,6 +1,6 @@
 <template>
         <el-row>
-          <el-col :span="6">
+          <el-col :span="4">
             <el-menu
             default-active="3"
             class="el-menu-vertical-demo"
@@ -20,7 +20,7 @@
             </template>
         </el-menu>
     </el-col>
-    <el-col :span="18">
+    <el-col :span="20">
         <router-view></router-view>
     </el-col>
 </el-row>

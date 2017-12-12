@@ -6,9 +6,7 @@
     tooltip-effect="dark"
     style="width: 100%"
     @selection-change="handleSelectionChange">
-    <el-table-column
-      type="selection"
-      width="55">
+    <el-table-columntype="selection"width="55">
     </el-table-column>
     <el-table-column
         prop="realName"
@@ -32,6 +30,9 @@
       <template slot-scope="scope">
         <el-button
           size="mini"
+          @click="handleChange(scope.$index, scope.row)">更换</el-button>
+        <el-button
+          size="mini"
           @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
         <el-button
           size="mini"
@@ -50,11 +51,36 @@
     </span>
   </el-dialog> 
 
+  <el-dialog title="编辑信息" :visible.sync="editDialogVisible" width="50%" center>
+      姓名：
+      <el-input
+        placeholder="请输入真实姓名" v-model="userName" clearable>
+      </el-input>
+      年龄：
+      <el-input
+        placeholder="请输入年龄" v-model="age" clearable>
+      </el-input>
+      电话：
+      <el-input
+        placeholder="请输入联系方式" v-model="telPhone"  clearable>
+      </el-input>
+      地址：
+      <el-input
+        placeholder="请输入联系地址" v-model="address" clearable>
+      </el-input>
+
+      <span slot="footer" class="dialog-footer">
+      <el-button @click="editDialogVisible = false">取 消</el-button>
+      <el-button type="primary" @click="editUser" :loading="editLoading">确 定</el-button>
+    </span>
+  </el-dialog> 
+
+
   </div>
 </template>
 
   <script type="text/javascript">
- 	import {getUserList, deleteUser} from '@/api/api'
+ 	import {getUserList, deleteUser, editUser} from '@/api/api'
   	export default{
   		data(){
   			return {
@@ -63,7 +89,14 @@
           delDialogVisible : false,
           hiddenVisible : false,
           del_userName : "",
-          rowInfo : ""
+          rowInfo : "",
+          editDialogVisible : false,
+          userName : "",
+          age : "",
+          telPhone : "",
+          address : "",
+          editLoading : false,
+
   			}
   		},
   		mounted:function(){
@@ -92,6 +125,14 @@
           this.hiddenVisible = false;
   			},
 
+        handleChange:function(index, row){
+          this.userName = row.realName;
+          this.age = row.age;
+          this.telPhone = row.phoneNumber;
+          this.address = row.address;
+          this.editDialogVisible = true;
+        },
+
         //确认删除用户
         delUser(){
             this.delLoading = true;
@@ -111,8 +152,18 @@
               })
              }
             });
+        },
 
+        editUser(){
+            this.editLoading = true;
+            let params = [{id:this.rowInfo.id},{realName:this.realName},{phoneNumber:this.telPhone},{age:this.age},{address:this.address}]
+            let _this = this;
+
+            editUser(params).then(res => {
+                alert(res.code);
+            });
         }
+
   		}
   	}
   </script>
