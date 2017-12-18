@@ -6,7 +6,12 @@
 
 <script>
 export default {
-  name: 'app'
+  name: 'app',
+  mounted:function(){
+    this.$router.push({
+      path:"/login"
+    })
+  }
 }
 </script>
 

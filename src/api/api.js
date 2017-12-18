@@ -11,7 +11,7 @@ axios.interceptors.request.use( config => {
   }, error=> {
     return Promise.reject(error);
   });
- 
+
 axios.interceptors.response.use(response => {
     NProgress.done()
     return response;
@@ -20,6 +20,7 @@ axios.interceptors.response.use(response => {
     return Promise.reject(error);
   });
 export const login = params =>{return axios.post(`${base}/loginWeb`,params).then(res => { res.data })}
+export const logout = params =>{return axios.post(`${base}/logout`,params).then(res => { res.data })}
 //角色
 export const getRoleList = () => {return axios.get(`${base}/resource/role/listTopRole`).then(res => res.data)}
 export const getRoleListByParent = (id) => {return axios.get(`${base}/resource/role/listByParent/${id}`).then(res => res.data)}
@@ -38,4 +39,3 @@ export const getResourceList = () => {return axios.get(`${base}/resource/resourc
 export const getResourceListByParent = (id) => {return axios.get(`${base}/resource/resource/listByParent/${id}`).then(res => res.data)}
 export const saveResource = params => {return axios.post(`${base}/resource/resource/save`,params).then(res => res.data) }
 export const deleteResource = params =>{return axios.post(`${base}/resource/resource/delete`, params).then(res => res.data) }
-
