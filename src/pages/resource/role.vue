@@ -1,14 +1,17 @@
 <template>
 	<div >
+    <el-row class="toolbar">
+      <el-col :span ="3">
+        <el-button size="mini" type="success" @click="openAddRoleWin"><i class="fa fa-plus"/>  增加</el-button>
+      </el-col>
+    </el-row>
 		<el-tree
 			:data="roleList"
  			lazy
   			:load="loadChildren"
-  			show-checkbox
   			:expand-on-click-node="false"
   			:render-content="renderContent" >
 		</el-tree>
-
 	<el-dialog
   title="增加角色"
   :visible.sync="centerDialogVisible"
@@ -22,13 +25,35 @@
     <el-input v-model="addData.roleName"></el-input>
   </el-form-item>
   <el-form-item label="资源权限">
-    <el-input v-model="addData.resource"></el-input>
+    <span>
+    <el-input type="textarea" v-model="showResourceList" :disabled="true"></el-input>
+    <el-button @click="updateResource">修改资源权限</el-button>
+    </span>
   </el-form-item>
 </el-form>
   <span slot="footer" class="dialog-footer">
     <el-button @click="centerDialogVisible = false">取 消</el-button>
     <el-button type="primary" @click="addRole" :loading="addLoading">确 定</el-button>
   </span>
+<el-dialog
+      width="50%"
+      title="修改资源权限"
+      :visible.sync="innerVisible"
+      append-to-body>
+       <el-tree
+            :data="resourceList"
+            lazy
+            show-checkbox
+            ref="resourceTree"
+            :load="loadResourceChildren"
+            :expand-on-click-node="false">
+        </el-tree>
+        <span slot="footer" class="dialog-footer">
+    <el-button @click="innerVisible = false">取 消</el-button>
+    <el-button type="primary" @click="confirmResource" :loading="addResourceLoading">确 定</el-button>
+  </span>
+    </el-dialog>
+
 </el-dialog>
 	</div>
 
@@ -36,25 +61,59 @@
 
 <script>
 
-	import {getRoleList,getRoleListByParent, saveRole, deleteRole} from '@/api/api'
+	import {getRoleList,getRoleListByParent, saveRole, deleteRole, getResourceList,getResourceListByParent} from '@/api/api'
 	export default{
 		data(){
 			return {
 				roleList:[],
 				addLoading:false,
 				centerDialogVisible:false,
+                addResourceLoading:false,
 				parentData:{},
 				addData:{},
 				currentNode:{},
+                innerVisible:false,
+                resourceList:[],
+                showResourceList:'',
 			}
 				
 		},
 		methods:{
+            confirmResource:function(){
+                var resourceArray = this.$refs.resourceTree.getCheckedNodes()
+                var resourceIdArray = []
+                var showResourceList = []
+                for(var i in resourceArray){
+                    resourceIdArray.push(resourceArray[i].id)
+                    showResourceList.push(resourceArray[i].resourceName)
+                }
+                this.showResourceList = showResourceList.join(',')
+                this.addData.resource = resourceIdArray.join(',')
+                this.innerVisible = false;
+            },
+            loadResourceChildren:function(node,resolve){
+                if(node.data.id){
+                     getResourceListByParent(node.data.id).then(res => {
+                        if (res.data){
+                            for (let i in res.data){
+                                res.data[i].label = res.data[i].resourceName
+                            }
+                            resolve(res.data)
+                         } else {
+                            resolve([])
+                         }
+                     })
+                 }
+            },
+            updateResource :function(){
+                this.innerVisible = true;
+                this.refreshResourceTree();
+
+            },
 			handleSelectionChange:function(){
 				 this.multipleSelection = val
 			},
 			loadChildren:function(node,resolve){
-                console.log(node)
 				 getRoleListByParent(node.data.id).then(res => {
 				 	if (res.data){
 					 	for (let i in res.data){
@@ -65,12 +124,17 @@
 					 	resolve([])
 					 }
 				 })
-                 console.log(node)
 
 			},
 			openAddRoleWin(node,data){
+        if(data){
+          this.parentData = data  
+        }
+        else{
+          this.parentData = {}
+        }
 				this.centerDialogVisible = true
-				this.parentData = data
+				
 				this.currentNode = node
 
 			},
@@ -79,7 +143,7 @@
 				let _this = this
 				saveRole(JSON.stringify({
 					roleName:_this.addData.roleName,
-					resource:"1,2,3",
+					resource:_this.addData.resource,
 					parentId:_this.parentData.id
 				})).then(res => {
                     _this.addLoading = false
@@ -91,7 +155,7 @@
                             _this.$set(_this.parentData, 'children', []);
                         }
                           _this.parentData.children.push(newChild);
-                        console.log(_this.currentNode)
+                        this.refreshTree()
                         _this.$message({
                             message:'操作成功',
                             type:'success'
@@ -103,6 +167,14 @@
 					
 				})
 			},
+            refreshResourceTree(){
+                getResourceList().then(res => {
+                this.resourceList = res.data
+                for(var i in this.resourceList){
+                    this.resourceList[i].label = this.resourceList[i].resourceName
+                }
+            })
+            },
   			clearAddForm(){
   				this.addData ={}
 			 },
@@ -115,7 +187,6 @@
             })
             },
       removeData(node,data){
-        console.log(node)
         let params = [{id:data.id}]
         deleteRole(params).then(res => {
          if (res.code == 0 ){
@@ -123,6 +194,7 @@
             message:'操作成功',
             type:'success'
           })
+          this.refreshTree()
          }
         })
 
@@ -134,8 +206,8 @@
               <span>{node.label}</span>
             </span>
             <span>
-              <el-button style="font-size: 10px;" size="mini" type="text" on-click={ () => this.openAddRoleWin(node, data) }>增加</el-button>
-              <el-button style="font-size: 10px;" type="text" on-click={ () => this.removeData(node, data) }>删除</el-button>
+              <el-button style="font-size: 16px;" size="mini" type="text" on-click={ () => this.openAddRoleWin(node, data) }>增加</el-button>
+              <el-button style="font-size: 16px;" type="text" on-click={ () => this.removeData(node, data) }>删除</el-button>
             </span>
           </span>);
       }},
@@ -144,10 +216,10 @@
 	  }
 	}
 
-
-
-
-
-
-
 </script>
+
+<style type="text/css">
+  .toolbar{
+    margin: 10px;
+  }
+</style>

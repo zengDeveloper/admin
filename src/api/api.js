@@ -6,7 +6,6 @@ let base = '/shirospring'
 //let headers = [{Content-Type:'application/json'}]
 axios.interceptors.request.use( config => {
     config.headers['Content-Type'] = 'application/json'
-    console.log(config.headers)
     NProgress.start()
     return config;
   }, error=> {
@@ -34,3 +33,15 @@ export const getUserList = params => {return axios.post(`${base}/resource/user/g
 export const deleteUser = params => {return axios.post(`${base}/resource/user/deleteUserInfo`,params).then(res => res.data)}
 //编辑用户信息
 export const editUser = params => {return axios.post(`${base}/resource/user/editUserInfo`,params).then(res => res.data)}
+//校验用户名
+export const checkAccount = params => {return axios.post(`${base}/resource/auth/checkAuth`,params).then(res => res.data)}
+//新增用户
+export const addUser = params => {return axios.post(`${base}/resource/user/addUserInfo`,params).then(res => res.data)}
+
+//资源
+export const getResourceList = () => {return axios.get(`${base}/resource/resource/listTopResource`).then(res => res.data)}
+export const getResourceListByParent = (id) => {return axios.get(`${base}/resource/resource/listByParent/${id}`).then(res => res.data)}
+export const saveResource = params => {return axios.post(`${base}/resource/resource/save`,params).then(res => res.data) }
+export const deleteResource = params =>{return axios.post(`${base}/resource/resource/delete`, params).then(res => res.data) }
+
+//
