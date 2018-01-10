@@ -61,7 +61,7 @@
                 addData:{},
                 currentNode:{},
             }
-                
+
         },
         methods:{
             handleSelectionChange:function(){
@@ -71,7 +71,7 @@
                 if(node.data.id){
                      getResourceListByParent(node.data.id).then(res => {
                         if (res.data){
-                            for (let i in res.data){
+                             for (let i in res.data){
                                 res.data[i].label = res.data[i].resourceName
                             }
                             resolve(res.data)
@@ -83,13 +83,13 @@
             },
             openAddWin(node,data){
         if(data){
-          this.parentData = data  
+          this.parentData = data
         }
         else{
           this.parentData = {}
         }
                 this.centerDialogVisible = true
-                
+
                 this.currentNode = node
 
             },
@@ -122,7 +122,7 @@
                     else{
 
                     }
-                    
+
                 })
             },
             clearAddForm(){

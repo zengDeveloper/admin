@@ -38,7 +38,16 @@ export const deleteRole = params =>{return axios.post(`${base}/resource/role/del
 export const getUserList = params => {return axios.post(`${base}/resource/user/getAllUser`,params).then(res => res.data)}
 //删除用户信息
 export const deleteUser = params => {return axios.post(`${base}/resource/user/deleteUserInfo`,params).then(res => res.data)}
+
 export const getCurrentUser = (id) => {return axios.get(`${base}/resource/user/currentUser`).then(res => res.data)}
+
+
+//编辑用户信息
+export const editUser = params => {return axios.post(`${base}/resource/user/editUserInfo`,params).then(res => res.data)}
+//校验用户名
+export const checkAccount = params => {return axios.post(`${base}/resource/auth/checkAuth`,params).then(res => res.data)}
+//新增用户
+export const addUser = params => {return axios.post(`${base}/resource/user/addUserInfo`,params).then(res => res.data)}
 
 
 //资源
