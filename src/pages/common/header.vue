@@ -13,6 +13,7 @@
 		<el-col :span="2" class="div_top_icon">
 			<i class="el-icon-more top_icon"></i>
 		</el-col>
+
 		<el-col :span="6" class="div_top_icon">
 			<span class="username"><i class="fa fa-male"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Jack</span>
 		</el-col>
@@ -21,8 +22,18 @@
 </div>
 </template>
 <script>
+import {logout} from '@/api/api'
   export default {
-   
+		methods:{
+			exit:function(){
+				logout().then((res) =>{
+					console.log(res)
+				})
+				this.$router.push({
+					path:"/login"
+				})
+			}
+		}
   }
 </script>
 <style>
@@ -58,5 +69,14 @@
 
 body{
 	margin: 0;
+}
+.avator{
+	text-align: center;
+	line-height: 40px;
+	background: #409EFF;
+	color: #fff;
+	width: 40px;
+	height: 40px;
+	border-radius: 20px;
 }
 </style>
