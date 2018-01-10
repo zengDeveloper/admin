@@ -1,6 +1,6 @@
 <template>
         <el-row class="content">
-          <el-col :span="6">
+          <el-col :span="4">
             <el-menu
             default-active="3"
             class="el-menu-vertical-demo"
@@ -20,7 +20,7 @@
             </template>
         </el-menu>
     </el-col>
-    <el-col :span="18">
+    <el-col :span="20">
             <div style="margin:20px;">
                 <el-breadcrumb separator="/">
                     <template v-for="breadcrumbd in breadcrumbdata">
@@ -53,7 +53,7 @@ export default {
             }
         }
     }
-    
+
 }
 </script>
 

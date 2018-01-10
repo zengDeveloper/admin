@@ -1,10 +1,10 @@
 <template>
 <div>
 	<el-row :span="24" class="top_bar">
-		<el-col :span="6" class="div_system_name">
+		<el-col :span="4" class="div_system_name">
 			<span class="system_name">后台管理系统</span>
 		</el-col>
-		<el-col :span="2" class="div_top_icon" :offset="8">
+		<el-col :span="2" class="div_top_icon" :offset="10">
 			<i class="el-icon-message top_icon"></i>
 		</el-col>
 		<el-col :span="2" class="div_top_icon">
@@ -13,16 +13,21 @@
 		<el-col :span="2" class="div_top_icon">
 			<i class="el-icon-more top_icon"></i>
 		</el-col>
-		<el-col :span="4" class="div_top_icon">
-			<span class="username" @click="exit"> <span class="avator">J</span>Jack</span>
+		<el-col :span="4" @click.native="exit"  class="div_top_icon" >
+			<span class="username" > <div class="avator">{{avatorCharactor}}</div>{{currentUserProfile.realName}}</span>
 		</el-col>
-
 	</el-row>
 </div>
 </template>
 <script>
-import {logout} from '@/api/api'
+import {logout, getCurrentUser} from '@/api/api'
   export default {
+		data:function(){
+			return {
+				currentUserProfile:{},
+				avatorCharactor:"X",
+			}
+		},
 		methods:{
 			exit:function(){
 				logout().then((res) =>{
@@ -32,7 +37,13 @@ import {logout} from '@/api/api'
 					path:"/login"
 				})
 			}
-		}
+		},
+		mounted:function(){
+			getCurrentUser().then(res=>{
+				this.currentUserProfile = res.data
+				this.avatorCharactor = this.currentUserProfile.realName.substring(0,1)
+			})
+		},
   }
 </script>
 <style>
@@ -70,9 +81,11 @@ body{
 	margin: 0;
 }
 .avator{
-	text-align: center;
+	margin-top: 5px;
 	line-height: 40px;
-	background: #409EFF;
+	margin-left: 40px;
+	float: left;
+	background: #F56C6C;
 	color: #fff;
 	width: 40px;
 	height: 40px;
