@@ -61,7 +61,7 @@
                 addData:{},
                 currentNode:{},
             }
-                
+
         },
         methods:{
             handleSelectionChange:function(){
@@ -83,13 +83,13 @@
             },
             openAddWin(node,data){
         if(data){
-          this.parentData = data  
+          this.parentData = data
         }
         else{
           this.parentData = {}
         }
                 this.centerDialogVisible = true
-                
+
                 this.currentNode = node
 
             },
@@ -122,7 +122,7 @@
                     else{
 
                     }
-                    
+
                 })
             },
             clearAddForm(){

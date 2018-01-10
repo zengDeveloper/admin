@@ -1,5 +1,5 @@
 <template>
-        <el-row>
+        <el-row class="content">
           <el-col :span="4">
             <el-menu
             default-active="3"
@@ -53,7 +53,7 @@ export default {
             }
         }
     }
-    
+
 }
 </script>
 

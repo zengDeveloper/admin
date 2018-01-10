@@ -1,6 +1,7 @@
 import axios from 'axios'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
+import router from '../router'
 
 let base = '/shirospring'
 //let headers = [{Content-Type:'application/json'}]
@@ -14,6 +15,11 @@ axios.interceptors.request.use( config => {
 
 axios.interceptors.response.use(response => {
     NProgress.done()
+    if (response.data.code == 1001){
+      router.push({
+        path:'/login'
+      })
+    }
     return response;
   },error=> {
     // Do something with response error
@@ -32,6 +38,10 @@ export const deleteRole = params =>{return axios.post(`${base}/resource/role/del
 export const getUserList = params => {return axios.post(`${base}/resource/user/getAllUser`,params).then(res => res.data)}
 //删除用户信息
 export const deleteUser = params => {return axios.post(`${base}/resource/user/deleteUserInfo`,params).then(res => res.data)}
+
+export const getCurrentUser = (id) => {return axios.get(`${base}/resource/user/currentUser`).then(res => res.data)}
+
+
 //编辑用户信息
 export const editUser = params => {return axios.post(`${base}/resource/user/editUserInfo`,params).then(res => res.data)}
 //校验用户名
@@ -39,9 +49,9 @@ export const checkAccount = params => {return axios.post(`${base}/resource/auth/
 //新增用户
 export const addUser = params => {return axios.post(`${base}/resource/user/addUserInfo`,params).then(res => res.data)}
 
+
 //资源
 export const getResourceList = () => {return axios.get(`${base}/resource/resource/listTopResource`).then(res => res.data)}
 export const getResourceListByParent = (id) => {return axios.get(`${base}/resource/resource/listByParent/${id}`).then(res => res.data)}
 export const saveResource = params => {return axios.post(`${base}/resource/resource/save`,params).then(res => res.data) }
 export const deleteResource = params =>{return axios.post(`${base}/resource/resource/delete`, params).then(res => res.data) }
-
