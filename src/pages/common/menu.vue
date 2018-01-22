@@ -8,13 +8,13 @@
             text-color="#fff"
             active-text-color="#ffd04b">
             <template v-for="(menus,i) in menuss" >
-                <el-submenu :index=" i + ''" >
-                    <template v-for="(menu, j) in menus">
-                        <template slot="title" v-if="j == 0">
-                            <i class="el-icon-location"></i>
-                            <span>{{menu.resourceName}}</span>
-                        </template>
-                        <el-menu-item v-else @click="jump(menu.resourcePath,menus[0].resourceName, menu.resourceName)" :route="menu.resourcePath" :index=" i + '-' + j" >{{menu.resourceName}}</el-menu-item>
+                <el-submenu :index = "i + ''">
+                    <template slot="title">
+                        <i class="el-icon-location"></i>
+                        <span>{{menus.resourceName}}</span>
+                    </template>
+                    <template v-for="(menu, j) in menus.children">
+                        <el-menu-item   @click="jump(menu.resourcePath,menus.resourceName, menu.resourceName)" :route="menu.resourcePath" :index=" i + '-' + j" >{{menu.resourceName}}</el-menu-item>
                     </template>
                 </el-submenu>
             </template>
@@ -37,22 +37,22 @@
 export default {
     data(){
         return {
-            menuss:JSON.parse(localStorage.getItem('menus')),
+            menuss:JSON.parse(localStorage.getItem('menuss')),
             breadcrumbdata:[]
         }
     },
     methods:{
         jump(path, parentSource, resourceName){
-            let _this = this
-            _this.$router.push(path)
-            if( _this.breadcrumbdata.length != 0){
-                _this.breadcrumbdata.splice(0, _this.breadcrumbdata.length, parentSource, resourceName)
+            this.$router.push(path)
+            if( this.breadcrumbdata.length != 0){
+                this.breadcrumbdata.splice(0, this.breadcrumbdata.length, parentSource, resourceName)
             } else{
-                _this.breadcrumbdata.push(parentSource)
-                _this.breadcrumbdata.push(resourceName)
+                this.breadcrumbdata.push(parentSource)
+                this.breadcrumbdata.push(resourceName)
             }
-        }
-    }
+        },
+    },
+
 
 }
 </script>
