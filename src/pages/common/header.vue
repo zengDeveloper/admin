@@ -30,12 +30,8 @@ import {logout, getCurrentUser} from '@/api/api'
 		},
 		methods:{
 			exit:function(){
-				logout().then((res) =>{
-					console.log(res)
-				})
-				this.$router.push({
-					path:"/login"
-				})
+				logout()
+
 			}
 		},
 		mounted:function(){

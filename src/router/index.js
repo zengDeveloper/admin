@@ -8,7 +8,10 @@ import resource from '@/pages/resource/resource'
 
 Vue.use(Router)
 
-export default new Router({
+let vueRouter
+
+
+vueRouter =  new Router({
   routes: [
     {
       path: '/login',
@@ -18,23 +21,13 @@ export default new Router({
     {
       path: '/',
       name: 'index',
-      component: index,
-      children:[
-      {
-        path:'/resource/role',
-        name:'role',
-        component:role
-      },
-      {
-        path:'/resource/user',
-        name:'user',
-        component:user
-      },{
-        path:'/resource/resource',
-        name:'resource',
-        component:resource
-      }
-      ]
+      component: index
     }
     ]
 })
+// let registerRouteFresh = true
+// if (registerRouteFresh){
+//     vueRouter.addRoutes(JSON.parse(sessionStorage.getItem('routes')))
+// }
+
+export default vueRouter

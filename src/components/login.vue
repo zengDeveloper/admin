@@ -41,14 +41,57 @@ export default {
     }
   },
   methods:{
+      buildRouters(resources){
+        let menuss = []
+        for (let i in resources) {
+          let tempResource = resources[i]
+          if (tempResource.type == 'menu'){
+            break
+          }
+          tempResource.path = tempResource.resourcePath
+          tempResource.name = tempResource.resourceName
+          tempResource.component = resolve => require(['../pages' + tempResource.resourcePath +'.vue'], resolve)
+          if(tempResource.parentId){
+            for(let j in menuss){
+              let tempRouter = menuss[j]
+              if (tempResource.parentId == tempRouter.id){
+                if (tempRouter.children){
+                  tempRouter.children.push(tempResource)
+                }else{
+                  tempRouter.children = []
+                  tempRouter.children.push(tempResource)
+                }
+              }
+            }
+          }
+          else {
+              menuss.push(tempResource)
+          }
+        }
+
+        localStorage.setItem('menuss',JSON.stringify(menuss))
+        var childrenRouters = []
+        for( let i in menuss){
+            if(menuss[i].children){
+                childrenRouters.push.apply(childrenRouters,menuss[i].children)
+            }
+        }
+
+        //buildRouters
+        let routes = this.$router.options.routes
+        routes[1].children = childrenRouters
+        this.$router.addRoutes(routes)
+        sessionStorage.setItem('routes', JSON.stringify(routes))
+        console.log(sessionStorage.getItem('routes'))
+    },
     check:function(){
-      console.log(this.username)
       this.$http.post('/shirospring/loginWeb',{
         username:this.username,
         password:this.password
       }).then((res) =>{
         if (0 == res.data.code) {
-          localStorage.setItem('menus',JSON.stringify(res.data.data))
+          localStorage.setItem('resources',JSON.stringify(res.data.data))
+          this.buildRouters(res.data.data)
           this.$router.push({
             path:'/'
           })
