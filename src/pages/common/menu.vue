@@ -37,7 +37,7 @@
 export default {
     data(){
         return {
-            menuss:JSON.parse(localStorage.getItem('menuss')),
+            menuss:JSON.parse(sessionStorage.getItem('menuss')),
             breadcrumbdata:[]
         }
     },
