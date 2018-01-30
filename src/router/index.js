@@ -10,6 +10,19 @@ Vue.use(Router)
 
 let vueRouter
 
+let menuss = sessionStorage.getItem("menuss")
+let childrenRouters = []
+if(menuss){
+    menuss = JSON.parse(menuss)
+    for(let i in menuss){
+        let childrens = menuss[i].children
+        for (let j in childrens ) {
+            childrens[j].component = resolve => require(['../pages' + childrens[j].resourcePath +'.vue'], resolve)
+        }
+        childrenRouters.push.apply(childrenRouters,childrens)
+    }
+}
+
 
 vueRouter =  new Router({
   routes: [
@@ -21,13 +34,11 @@ vueRouter =  new Router({
     {
       path: '/',
       name: 'index',
-      component: index
+      component: index,
+      children:[
+          ...childrenRouters
+      ]
     }
     ]
 })
-// let registerRouteFresh = true
-// if (registerRouteFresh){
-//     vueRouter.addRoutes(JSON.parse(sessionStorage.getItem('routes')))
-// }
-
 export default vueRouter

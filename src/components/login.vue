@@ -69,7 +69,7 @@ export default {
           }
         }
 
-        localStorage.setItem('menuss',JSON.stringify(menuss))
+        sessionStorage.setItem('menuss',JSON.stringify(menuss))
         var childrenRouters = []
         for( let i in menuss){
             if(menuss[i].children){
