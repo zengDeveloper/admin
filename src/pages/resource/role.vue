@@ -45,6 +45,7 @@
             lazy
             show-checkbox
             ref="resourceTree"
+			@check-change="r"
             :load="loadResourceChildren"
             :expand-on-click-node="false">
         </el-tree>
@@ -76,15 +77,23 @@
                 resourceList:[],
                 showResourceList:'',
 			}
-				
+
 		},
 		methods:{
+			r:function(data,data1,data2){
+				console.log(data)
+				console.log(data1)
+				console.log(data2)
+			},
             confirmResource:function(){
                 var resourceArray = this.$refs.resourceTree.getCheckedNodes()
                 var resourceIdArray = []
                 var showResourceList = []
                 for(var i in resourceArray){
                     resourceIdArray.push(resourceArray[i].id)
+					if(resourceArray[i].parentId){
+						resourceIdArray.push(resourceArray[i].parentId)
+					}
                     showResourceList.push(resourceArray[i].resourceName)
                 }
                 this.showResourceList = showResourceList.join(',')
@@ -128,13 +137,13 @@
 			},
 			openAddRoleWin(node,data){
         if(data){
-          this.parentData = data  
+          this.parentData = data
         }
         else{
           this.parentData = {}
         }
 				this.centerDialogVisible = true
-				
+
 				this.currentNode = node
 
 			},
@@ -164,7 +173,7 @@
                     else{
 
                     }
-					
+
 				})
 			},
             refreshResourceTree(){
